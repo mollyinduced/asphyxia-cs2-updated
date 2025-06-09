@@ -605,7 +605,8 @@ void OVERLAY::Player(CCSPlayerController* pLocal, CCSPlayerController* pPlayer, 
 
 	if (const auto& nameOverlayConfig = C_GET(TextOverlayVar_t, Vars.overlayName); nameOverlayConfig.bEnable)
 	{
-		const char* szPlayerName = pPlayer->GetPlayerName();
+		// update this offset if it crashes when you turn this on
+		const char* szPlayerName = pPlayer->m_sSanitizedPlayerName();
 		context.AddComponent(new CTextComponent(false, SIDE_TOP, DIR_TOP, FONT::pVisual, szPlayerName, Vars.overlayName));
 	}
 

@@ -293,6 +293,7 @@ public:
 	SCHEMA_ADD_FIELD(bool, IsPawnHasHelmet, "CCSPlayerController->m_bPawnHasHelmet");
 	SCHEMA_ADD_FIELD(bool, IsPawnAlive, "CCSPlayerController->m_bPawnIsAlive");
 	SCHEMA_ADD_FIELD(CBaseHandle, GetPlayerPawnHandle, "CCSPlayerController->m_hPlayerPawn");
+	SCHEMA_ADD_OFFSET(const char*, m_sSanitizedPlayerName, 0x778);
 };
 
 class CBaseAnimGraph : public C_BaseModelEntity

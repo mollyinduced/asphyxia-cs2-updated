@@ -1,5 +1,7 @@
 ﻿# ASPHYXIA: CS2
 
+# ⚠️ THIS IS DETECTED BY VAC! DO NOT USE THIS IF YOU ARE WORRIED ABOUT YOUR ACCOUNT⚠️
+
 ## Table of Contents :scroll:
 - [About](#about)
 - [Contact](#contact)

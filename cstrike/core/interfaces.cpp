@@ -171,12 +171,12 @@ bool I::Setup()
 	bSuccess &= (Device != nullptr && DeviceContext != nullptr);
 	
 	// #STR: CSGOInput
-	Input = *reinterpret_cast<CCSGOInput**>(MEM::ResolveRelativeAddress(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 8B 0D D1 3A 29 01 4C 8D 8F E0 05 ? ? 45 33 FF")), 0x3, 0x7));
+	Input = *reinterpret_cast<CCSGOInput**>(MEM::ResolveRelativeAddress(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 8B 0D ? ? ? ? 4C 8B C6 8B 10 E8")), 0x3, 0x7));
 	bSuccess &= (Input != nullptr);
 
 	// @ida: #STR: "gpGlocals->rendertime() called while IsInSimulation() is true, "gpGlocals->curtime() called while IsInSimulation() is false
 	// @ida: #STR: "C_SceneEntity::SetupClientOnlyScene:  C" then go up until you see it
-	GlobalVars = *reinterpret_cast<IGlobalVars**>(MEM::ResolveRelativeAddress(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 8B 0D 99 C7 0D 01 4C 8D 05 42 CB 0D 01")), 0x3, 0x7));
+	GlobalVars = *reinterpret_cast<IGlobalVars**>(MEM::ResolveRelativeAddress(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 8B 05 ?? ?? ?? ?? 44 8B B7 ?? ?? ?? ?? 8B 70 04 B8 ?? ?? ?? ??")), 0x3, 0x7));
 	bSuccess &= (GlobalVars != nullptr);
 
 	// @ida: #STR: "CRenderingWorldSession::OnLoopActivate" go down just a bit
@@ -185,7 +185,7 @@ bool I::Setup()
 
 	// @ida: #STR: "Physics/TraceShape (Client)"
 	// @ida: #STR: "Weapon_Knife.Stab" then go up
-	GameTraceManager = *reinterpret_cast<CGameTraceManager**>(MEM::GetAbsoluteAddress(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 8B 1D ? ? ? ? 24 ? 0C ? F3 0F 7F 45")), 0x3, 0x0));
+	GameTraceManager = *reinterpret_cast<CGameTraceManager**>(MEM::GetAbsoluteAddress(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 8B 1D ? ? ? ? 24 ? 0C ?")), 0x3, 0x0));
 	bSuccess &= (GameTraceManager != nullptr);
 
 	return bSuccess;

@@ -460,7 +460,7 @@ void OVERLAY::OnFrameStageNotify(CCSPlayerController* pLocalController)
 		ESortEntityType nSortType;
 	};
 
-	const int nHighestIndex = I::GameResourceService->pGameEntitySystem->GetHighestEntityIndex();
+	const int nHighestIndex = 126;
 
 	std::vector<SortEntityObject_t> vecSortedEntities = {};
 	vecSortedEntities.reserve(nHighestIndex);

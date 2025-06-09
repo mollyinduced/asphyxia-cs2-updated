@@ -12,4 +12,7 @@ namespace CORE
 	inline void* hDll = nullptr;
 	// current process handle
 	inline void* hProcess = nullptr;
+
+	extern volatile bool bIsUnloading; // NEW - signals unloading
+	extern bool bInitialized; // NEW - signals setup state
 }

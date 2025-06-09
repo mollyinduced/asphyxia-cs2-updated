@@ -36,7 +36,7 @@ namespace VTABLE
 		{
 			CREATEMOVE = 21U, // Outdated (Using pattern for now)
 			MOUSEINPUTENABLED = 19U,
-			FRAMESTAGENOTIFY = 36U,
+			FRAMESTAGENOTIFY = 21U,
 		};
 	}
 

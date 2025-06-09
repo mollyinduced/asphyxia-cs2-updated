@@ -30,8 +30,6 @@ void F::VISUALS::OnDestroy()
 
 void VISUALS::OnFrame(const int nStage)
 {
-	if (nStage == FRAME_RENDER_END)
-	{
 		// check is render initialized
 		if (!D::bInitialized)
 			return;
@@ -48,7 +46,6 @@ void VISUALS::OnFrame(const int nStage)
 		}
 
 		D::SwapDrawData();
-	}
 }
 
 bool F::VISUALS::OnDrawObject(void* pAnimatableSceneObjectDesc, void* pDx11, CMeshData* arrMeshDraw, int nDataCount, void* pSceneView, void* pSceneLayer, void* pUnk, void* pUnk2)

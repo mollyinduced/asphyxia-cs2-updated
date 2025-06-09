@@ -80,7 +80,7 @@ void F::LEGITBOT::AIM::AimAssist(CBaseUserCmdPB* pUserCmd, C_CSPlayerPawn* pLoca
 	Vector_t vecBestPosition = Vector_t();
 
 	// Entity loop
-	const int iHighestIndex = I::GameResourceService->pGameEntitySystem->GetHighestEntityIndex();
+	const int iHighestIndex = 126;
 
 	for (int nIndex = 1; nIndex <= iHighestIndex; nIndex++)
 	{

@@ -89,7 +89,7 @@ bool H::Setup()
 
 	// For now, we'll use the pattern
 	// Credit: https://www.unknowncheats.me/forum/4265695-post6331.html
-	if (!hkCreateMove.Create(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 8B C4 4C 89 40 ? 48 89 48 ? 55 53 56 57 48 8D A8")), reinterpret_cast<void*>(&CreateMove)))
+	if (!hkCreateMove.Create(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 8B C4 4C 89 40 18 48 89 48 08 55 53 57")), reinterpret_cast<void*>(&CreateMove)))
 		return false;
 	L_PRINT(LOG_INFO) << CS_XOR("\"CreateMove\" hook has been created");
 
@@ -106,12 +106,12 @@ bool H::Setup()
 	// @ida: #STR: ; "mapname"
 	// @ida: #STR: ; "transition"
 	// and the pattern is in the first one "game_newmap"
-	if (!hkLevelInit.Create(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 89 5C 24 ? 56 48 83 EC ? 48 8B 0D ? ? ? ? 48 8B F2")), reinterpret_cast<void*>(&LevelInit)))
+	if (!hkLevelInit.Create(MEM::FindPattern(CLIENT_DLL, CS_XOR("40 53 48 83 EC 20 48 8B D9 E8 ? ? ? ? C6 83 ? ? ? ? ? C6 83 ? ? ? ? ?")), reinterpret_cast<void*>(&LevelInit)))
 		return false;
 	L_PRINT(LOG_INFO) << CS_XOR("\"LevelInit\" hook has been created");
 
 	// @ida: ClientModeShared -> #STR: "map_shutdown"
-	if (!hkLevelShutdown.Create(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 83 EC ? 48 8B 0D ? ? ? ? 48 8D 15 ? ? ? ? 45 33 C9 45 33 C0 48 8B 01 FF 50 ? 48 85 C0 74 ? 48 8B 0D ? ? ? ? 48 8B D0 4C 8B 01 41 FF 50 ? 48 83 C4 28 E9 C3 20 01 ?")), reinterpret_cast<void*>(&LevelShutdown)))
+	if (!hkLevelShutdown.Create(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 89 74 24 ? 57 48 83 EC 20 48 8B F9 E8 ? ? ? ? 48 8D 8F ? ? ? ?")), reinterpret_cast<void*>(&LevelShutdown)))
 		return false;
 	L_PRINT(LOG_INFO) << CS_XOR("\"LevelShutdown\" hook has been created");
 
@@ -123,7 +123,7 @@ bool H::Setup()
 	//*(float*)(pSetup + 0x494) = -v21; // m_OrthoLeft
 	//*(float*)(pSetup + 0x498) = -v22; // m_OrthoTop
 	//*(float*)(pSetup + 0x4A0) = v22; // m_OrthoBottom
-	if (!hkOverrideView.Create(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 56 41 57 48 83 EC ? 48 8B FA E8 20 1E ED FF")), reinterpret_cast<void*>(&OverrideView)))
+	if (!hkOverrideView.Create(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 56 41 57 48 83 EC ? 48 8B FA E8")), reinterpret_cast<void*>(&OverrideView)))
 		return false;
 
 	//L_PRINT(LOG_INFO) << CS_XOR("\"OverrideView\" hook has been created");
@@ -240,9 +240,9 @@ bool CS_FASTCALL H::CreateMove(CCSGOInput* pInput, int nSlot, CUserCmd* cmd)
 	// So far, you may be unable to press specific keys such as crouch and automatic shooting.
 	// A dodgy fix would be to comment it out but it still doesn't fix the bhop etc.
 
-	CRC::Save(pBaseCmd);
-	if (CRC::CalculateCRC(pBaseCmd) == true)
-		CRC::Apply(SDK::Cmd);
+	//CRC::Save(pBaseCmd);
+	//if (CRC::CalculateCRC(pBaseCmd) == true)
+	//	CRC::Apply(SDK::Cmd);
 
 
 	return bResult;
@@ -267,7 +267,7 @@ __int64* CS_FASTCALL H::LevelInit(void* pClientModeShared, const char* szNewMap)
 	const auto oLevelInit = hkLevelInit.GetOriginal();
 	// if global variables are not captured during I::Setup or we join a new game, recapture it
 	if (I::GlobalVars == nullptr)
-		I::GlobalVars = *reinterpret_cast<IGlobalVars**>(MEM::ResolveRelativeAddress(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 8B 0D 99 C7 0D 01 4C 8D 05 42 CB 0D 01")), 0x3, 0x7));
+		I::GlobalVars = *reinterpret_cast<IGlobalVars**>(MEM::ResolveRelativeAddress(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 8B 05 ?? ?? ?? ?? 44 8B B7 ?? ?? ?? ?? 8B 70 04 B8 ?? ?? ?? ??")), 0x3, 0x7));
 	
 	// disable model occlusion
 	I::PVS->Set(false);

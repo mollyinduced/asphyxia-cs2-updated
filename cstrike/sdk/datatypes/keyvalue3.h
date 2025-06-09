@@ -23,7 +23,7 @@ public:
 	static CKeyValues3* CreateMaterialResource()
 	{
 		using fnSetTypeKV3 = CKeyValues3*(CS_FASTCALL*)(CKeyValues3*, unsigned int, unsigned int);
-		static const fnSetTypeKV3 oSetTypeKV3 = reinterpret_cast<fnSetTypeKV3>(MEM::FindPattern(CLIENT_DLL, CS_XOR("40 53 48 83 EC 20 48 8B 01 48 8B D9 44")));
+		static const fnSetTypeKV3 oSetTypeKV3 = reinterpret_cast<fnSetTypeKV3>(MEM::FindPattern(CLIENT_DLL, CS_XOR("40 53 48 83 EC 30 48 8B D9 49")));
 
 		#ifdef CS_PARANOID
 		CS_ASSERT(oSetTypeKV3 != nullptr);

@@ -34,6 +34,9 @@
 // used: product version
 #include "sdk/interfaces/iengineclient.h"
 
+volatile bool CORE::bIsUnloading = false;
+bool CORE::bInitialized = false;
+
 bool CORE::GetWorkingPath(wchar_t* wszDestination)
 {
 	bool bSuccess = false;
@@ -42,7 +45,7 @@ bool CORE::GetWorkingPath(wchar_t* wszDestination)
 	// get path to user documents
 	if (SUCCEEDED(::SHGetKnownFolderPath(FOLDERID_Documents, KF_FLAG_CREATE, nullptr, &wszPathToDocuments)))
 	{
-		CRT::StringCat(CRT::StringCopy(wszDestination, wszPathToDocuments), CS_XOR(L"\\.asphyxia\\"));
+		CRT::StringCat(CRT::StringCopy(wszDestination, wszPathToDocuments), CS_XOR(L"\\.Leerware\\"));
 		bSuccess = true;
 
 		// create directory if it doesn't exist
@@ -62,15 +65,21 @@ bool CORE::GetWorkingPath(wchar_t* wszDestination)
 
 static bool Setup(HMODULE hModule)
 {
+	if (CORE::bInitialized)
+	{
+		L_PRINT(LOG_WARNING) << CS_XOR("Setup called but already initialized");
+		return true;
+	}
+
 #ifdef CS_LOG_CONSOLE
-	if (!L::AttachConsole(CS_XOR(L"asphyxia developer-mode")))
+	if (!L::AttachConsole(CS_XOR(L"Leerware developer-mode")))
 	{
 		CS_ASSERT(false); // failed to attach console
 		return false;
 	}
 #endif
 #ifdef CS_LOG_FILE
-	if (!L::OpenFile(CS_XOR(L"asphyxia.log")))
+	if (!L::OpenFile(CS_XOR(L"leerware.log")))
 	{
 		CS_ASSERT(false); // failed to open file
 		return false;
@@ -132,7 +141,7 @@ static bool Setup(HMODULE hModule)
 	L_PRINT(LOG_NONE) << L::SetColor(LOG_COLOR_FORE_GREEN | LOG_COLOR_FORE_INTENSITY) << CS_XOR("features initialization completed");
 
 	// iterate all valid modules for schema
-	std::vector<std::string> vecNeededModules = { CS_XOR("client.dll"), CS_XOR("engine2.dll"), CS_XOR("schemasystem.dll") };
+	std::vector<std::string> vecNeededModules = { CS_XOR("client.dll"), CS_XOR("engine2.dll"), CS_XOR("schemasystem.dll"), CS_XOR("matchmaking.dll") };
 	for (auto& szModule : vecNeededModules)
 	{
 		if (!SCHEMA::Setup(CS_XOR(L"schema.txt"), szModule.c_str()))
@@ -174,15 +183,23 @@ static bool Setup(HMODULE hModule)
 
 	// @note: this doesn't affect much, but it's good to know if we're using different version of the game
 	if (CRT::StringCompare(I::Engine->GetProductVersionString(), CS_PRODUCTSTRINGVERSION) != 0)
-		L_PRINT(LOG_WARNING) << L::SetColor(LOG_COLOR_FORE_YELLOW | LOG_COLOR_FORE_INTENSITY) << CS_XOR("version mismatch! local CS2 version: ") << CS_PRODUCTSTRINGVERSION << CS_XOR(", current CS2 version: ") << I::Engine->GetProductVersionString() << CS_XOR(". asphyxia might not function as normal.");
+		L_PRINT(LOG_WARNING) << L::SetColor(LOG_COLOR_FORE_YELLOW | LOG_COLOR_FORE_INTENSITY) << CS_XOR("version mismatch! local CS2 version: ") << CS_PRODUCTSTRINGVERSION << CS_XOR(", current CS2 version: ") << I::Engine->GetProductVersionString() << CS_XOR(". Leerware might not function as normal.");
 
-	L_PRINT(LOG_NONE) << L::SetColor(LOG_COLOR_FORE_CYAN | LOG_COLOR_FORE_INTENSITY) << CS_XOR("asphyxia initialization completed, version: ") << CS_STRINGIFY(CS_VERSION);
+	L_PRINT(LOG_NONE) << L::SetColor(LOG_COLOR_FORE_CYAN | LOG_COLOR_FORE_INTENSITY) << CS_XOR("Leerware initialization completed, version: ") << CS_STRINGIFY(CS_VERSION);
+	CORE::bInitialized = true; // mark initialized
 	return true;
 }
 
 // @todo: some of those may crash while closing process, because we dont have any dependencies from the game modules, it means them can be unloaded and destruct interfaces etc before our module | modify ldrlist?
 static void Destroy()
 {
+	if (!CORE::bInitialized)
+	{
+		L_PRINT(LOG_WARNING) << CS_XOR("Destroy called but not initialized");
+		return;
+	}
+
+	CORE::bIsUnloading = true;
 	// restore window messages processor to original
 	IPT::Destroy();
 
@@ -201,16 +218,25 @@ static void Destroy()
 #ifdef CS_LOG_FILE
 	L::CloseFile();
 #endif
+
+	CORE::bInitialized = false;
+	CORE::bIsUnloading = false;
 }
 
 DWORD WINAPI PanicThread(LPVOID lpParameter)
 {
-	// don't let proceed unload until user press specified key
-	while (!IPT::IsKeyReleased(C_GET(unsigned int, Vars.nPanicKey)))
-		::Sleep(500UL);
+	while ((::GetAsyncKeyState(C_GET(unsigned int, Vars.nPanicKey)) & 0x8000) == 0)
+		::Sleep(10UL);
 
-	// call detach code and exit this thread
+	L_PRINT(LOG_WARNING) << CS_XOR("panic key pressed, unloading...");
+
+	Destroy();
+
+	::Sleep(100);
+
 	::FreeLibraryAndExitThread(static_cast<HMODULE>(lpParameter), EXIT_SUCCESS);
+
+	return 0UL;
 }
 
 extern "C" BOOL WINAPI _CRT_INIT(HMODULE hModule, DWORD dwReason, LPVOID lpReserved);

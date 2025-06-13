@@ -16,32 +16,20 @@
     <Filter Include="dependencies\minhook\hde">
       <UniqueIdentifier>{500251C1-3C27-A041-6572-85D151F69E5F}</UniqueIdentifier>
     </Filter>
-    <Filter Include="features">
-      <UniqueIdentifier>{04AE61E7-F07A-BCF2-1994-AA9A05C0F180}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="features\misc">
-      <UniqueIdentifier>{5F23839A-CBE3-FED0-941E-484E009E43AD}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="features\visuals">
-      <UniqueIdentifier>{9A07E0F7-8600-FF49-AF32-E4CE9B8ADE55}</UniqueIdentifier>
-    </Filter>
     <Filter Include="resources">
       <UniqueIdentifier>{202B5BA7-8C95-0F1E-D5D3-C0C3417DED72}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="sdk">
-      <UniqueIdentifier>{67A9880B-D3B2-887C-5C2E-9F7CC836947C}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="sdk\datatypes">
-      <UniqueIdentifier>{85931A81-F153-96B7-BA8E-DF34260EDB93}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="sdk\interfaces">
-      <UniqueIdentifier>{7A23D2D0-66F1-C5D6-4F85-36FD3BF2A13B}</UniqueIdentifier>
     </Filter>
     <Filter Include="utilities">
       <UniqueIdentifier>{212A0ED3-8D94-C249-D6D2-73EF427CA09E}</UniqueIdentifier>
     </Filter>
-    <Filter Include="features\legitbot">
-      <UniqueIdentifier>{a0df371b-f244-4c53-b08d-762a0f9b6b0c}</UniqueIdentifier>
+    <Filter Include="sdk">
+      <UniqueIdentifier>{0f3f522e-a1e3-4b6c-9afe-4bf1eb2e6013}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sdk\interfaces">
+      <UniqueIdentifier>{34c5ed6e-28b6-4c54-8595-3d4d2736fac7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sdk\datatypes">
+      <UniqueIdentifier>{c57cc86c-e56b-486b-9653-61a955d91eed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -150,132 +138,6 @@
       <Filter>core</Filter>
     </ClInclude>
     <ClInclude Include="features.h" />
-    <ClInclude Include="features\misc.h">
-      <Filter>features</Filter>
-    </ClInclude>
-    <ClInclude Include="features\misc\movement.h">
-      <Filter>features\misc</Filter>
-    </ClInclude>
-    <ClInclude Include="features\visuals.h">
-      <Filter>features</Filter>
-    </ClInclude>
-    <ClInclude Include="features\visuals\chams.h">
-      <Filter>features\visuals</Filter>
-    </ClInclude>
-    <ClInclude Include="features\visuals\overlay.h">
-      <Filter>features\visuals</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\const.h">
-      <Filter>sdk</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\color.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\keyvalue3.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\matrix.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\qangle.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\quaternion.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\stronghandle.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\transform.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\usercmd.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\utlfixedmemory.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\utllinkedlist.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\utlmap.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\utlmemory.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\utlrbtree.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\utlstring.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\utlthash.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\utlvector.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\vector.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\datatypes\viewsetup.h">
-      <Filter>sdk\datatypes</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\entity.h">
-      <Filter>sdk</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\entity_handle.h">
-      <Filter>sdk</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\interfaces\ccsgoinput.h">
-      <Filter>sdk\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\interfaces\cgameentitysystem.h">
-      <Filter>sdk\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\interfaces\idebugoverlay.h">
-      <Filter>sdk\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\interfaces\iengineclient.h">
-      <Filter>sdk\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\interfaces\ienginecvar.h">
-      <Filter>sdk\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\interfaces\igameresourceservice.h">
-      <Filter>sdk\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\interfaces\iglobalvars.h">
-      <Filter>sdk\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\interfaces\iinputsystem.h">
-      <Filter>sdk\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\interfaces\imaterialsystem.h">
-      <Filter>sdk\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\interfaces\imemalloc.h">
-      <Filter>sdk\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\interfaces\inetworkclientservice.h">
-      <Filter>sdk\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\interfaces\iresourcesystem.h">
-      <Filter>sdk\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\interfaces\ischemasystem.h">
-      <Filter>sdk\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\interfaces\iswapchaindx11.h">
-      <Filter>sdk\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\interfaces\iviewrender.h">
-      <Filter>sdk\interfaces</Filter>
-    </ClInclude>
-    <ClInclude Include="sdk\vdata.h">
-      <Filter>sdk</Filter>
-    </ClInclude>
     <ClInclude Include="utilities\crt.h">
       <Filter>utilities</Filter>
     </ClInclude>
@@ -309,19 +171,126 @@
     <ClInclude Include="utilities\pe64.h">
       <Filter>utilities</Filter>
     </ClInclude>
-    <ClInclude Include="sdk\datatypes\utlbuffer.h" />
     <ClInclude Include="features\CRC.h" />
-    <ClInclude Include="sdk\interfaces\ipvs.h">
+    <ClInclude Include="sdk\const.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\entity_handle.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\entity.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\vdata.h">
+      <Filter>sdk</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\color.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\keyvalue3.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\matrix.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\qangle.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\quaternion.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\stronghandle.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\transform.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\usercmd.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\utlbuffer.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\utlfixedmemory.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\utllinkedlist.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\utlmap.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\utlmemory.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\utlrbtree.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\utlstring.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\utlthash.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\utlvector.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\vector.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\datatypes\viewsetup.h">
+      <Filter>sdk\datatypes</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\ccsgoinput.h">
+      <Filter>sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\cgameentitysystem.h">
       <Filter>sdk\interfaces</Filter>
     </ClInclude>
     <ClInclude Include="sdk\interfaces\cgametracemanager.h">
       <Filter>sdk\interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="features\legitbot\legitbot.h">
-      <Filter>features</Filter>
+    <ClInclude Include="sdk\interfaces\idebugoverlay.h">
+      <Filter>sdk\interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="features\legitbot\aim.h">
-      <Filter>features\legitbot</Filter>
+    <ClInclude Include="sdk\interfaces\iengineclient.h">
+      <Filter>sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\ienginecvar.h">
+      <Filter>sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\igameresourceservice.h">
+      <Filter>sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\iglobalvars.h">
+      <Filter>sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\iinputsystem.h">
+      <Filter>sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\imaterialsystem.h">
+      <Filter>sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\imemalloc.h">
+      <Filter>sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\inetworkclientservice.h">
+      <Filter>sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\ipvs.h">
+      <Filter>sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\ischemasystem.h">
+      <Filter>sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\iresourcesystem.h">
+      <Filter>sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\iswapchaindx11.h">
+      <Filter>sdk\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="sdk\interfaces\iviewrender.h">
+      <Filter>sdk\interfaces</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -387,33 +356,6 @@
       <Filter>core</Filter>
     </ClCompile>
     <ClCompile Include="features.cpp" />
-    <ClCompile Include="features\misc.cpp">
-      <Filter>features</Filter>
-    </ClCompile>
-    <ClCompile Include="features\misc\movement.cpp">
-      <Filter>features\misc</Filter>
-    </ClCompile>
-    <ClCompile Include="features\visuals.cpp">
-      <Filter>features</Filter>
-    </ClCompile>
-    <ClCompile Include="features\visuals\chams.cpp">
-      <Filter>features\visuals</Filter>
-    </ClCompile>
-    <ClCompile Include="features\visuals\overlay.cpp">
-      <Filter>features\visuals</Filter>
-    </ClCompile>
-    <ClCompile Include="sdk\datatypes\matrix.cpp">
-      <Filter>sdk\datatypes</Filter>
-    </ClCompile>
-    <ClCompile Include="sdk\datatypes\qangle.cpp">
-      <Filter>sdk\datatypes</Filter>
-    </ClCompile>
-    <ClCompile Include="sdk\datatypes\vector.cpp">
-      <Filter>sdk\datatypes</Filter>
-    </ClCompile>
-    <ClCompile Include="sdk\entity.cpp">
-      <Filter>sdk</Filter>
-    </ClCompile>
     <ClCompile Include="utilities\draw.cpp">
       <Filter>utilities</Filter>
     </ClCompile>
@@ -432,15 +374,23 @@
     <ClCompile Include="utilities\notify.cpp">
       <Filter>utilities</Filter>
     </ClCompile>
-    <ClCompile Include="sdk\datatypes\keyvalues3.cpp" />
+    <ClCompile Include="sdk\entity.cpp">
+      <Filter>sdk</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\datatypes\keyvalues3.cpp">
+      <Filter>sdk\datatypes</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\datatypes\matrix.cpp">
+      <Filter>sdk\datatypes</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\datatypes\qangle.cpp">
+      <Filter>sdk\datatypes</Filter>
+    </ClCompile>
+    <ClCompile Include="sdk\datatypes\vector.cpp">
+      <Filter>sdk\datatypes</Filter>
+    </ClCompile>
     <ClCompile Include="sdk\interfaces\cgametracemanager.cpp">
       <Filter>sdk\interfaces</Filter>
-    </ClCompile>
-    <ClCompile Include="features\legitbot\aim.cpp">
-      <Filter>features\legitbot</Filter>
-    </ClCompile>
-    <ClCompile Include="features\legitbot.cpp">
-      <Filter>features</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

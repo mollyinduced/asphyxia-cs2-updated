@@ -161,30 +161,32 @@ void MENU::RenderOverlayPreviewWindow()
 			vecWindowPos.y + vecWindowSize.y - vecOverlayPadding.y
 		};
 
-		if (const auto& boxOverlayConfig = C_GET(FrameOverlayVar_t, Vars.overlayBox); boxOverlayConfig.bEnable)
-		{
-			const bool bHovered = context.AddBoxComponent(pDrawList, vecBox, 1, boxOverlayConfig.flThickness, boxOverlayConfig.flRounding, boxOverlayConfig.colPrimary, boxOverlayConfig.colOutline);
-			if (bHovered && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
-				ImGui::OpenPopup(CS_XOR("context##box.component"));
-		}
+		// noted this out due to visuals removal (imgui base bitch)
 
-		if (const auto& nameOverlayConfig = C_GET(TextOverlayVar_t, Vars.overlayName); nameOverlayConfig.bEnable)
-			context.AddComponent(new CTextComponent(true, SIDE_TOP, DIR_TOP, FONT::pVisual, CS_XOR("asphyxia"), Vars.overlayName));
+		//if (const auto& boxOverlayConfig = C_GET(FrameOverlayVar_t, Vars.overlayBox); boxOverlayConfig.bEnable)
+		//{
+		//	const bool bHovered = context.AddBoxComponent(pDrawList, vecBox, 1, boxOverlayConfig.flThickness, boxOverlayConfig.flRounding, boxOverlayConfig.colPrimary, boxOverlayConfig.colOutline);
+		//	if (bHovered && ImGui::IsMouseClicked(ImGuiMouseButton_Right))
+		//		ImGui::OpenPopup(CS_XOR("context##box.component"));
+		//}
 
-		if (const auto& healthOverlayConfig = C_GET(BarOverlayVar_t, Vars.overlayHealthBar); healthOverlayConfig.bEnable)
-		{
-			const float flFactor = M_SIN(ImGui::GetTime() * 5.f) * 0.55f + 0.45f;
-			context.AddComponent(new CBarComponent(true, SIDE_LEFT, vecBox, flFactor, Vars.overlayHealthBar));
-		}
+		//if (const auto& nameOverlayConfig = C_GET(TextOverlayVar_t, Vars.overlayName); nameOverlayConfig.bEnable)
+		//	context.AddComponent(new CTextComponent(true, SIDE_TOP, DIR_TOP, FONT::pVisual, CS_XOR("asphyxia"), Vars.overlayName));
 
-		if (const auto& armorOverlayConfig = C_GET(BarOverlayVar_t, Vars.overlayArmorBar); armorOverlayConfig.bEnable)
-		{
-			const float flArmorFactor = M_SIN(ImGui::GetTime() * 5.f) * 0.55f + 0.45f;
-			context.AddComponent(new CBarComponent(false, SIDE_BOTTOM, vecBox, flArmorFactor, Vars.overlayArmorBar));
-		}
+		//if (const auto& healthOverlayConfig = C_GET(BarOverlayVar_t, Vars.overlayHealthBar); healthOverlayConfig.bEnable)
+		//{
+		//	const float flFactor = M_SIN(ImGui::GetTime() * 5.f) * 0.55f + 0.45f;
+		//	context.AddComponent(new CBarComponent(true, SIDE_LEFT, vecBox, flFactor, Vars.overlayHealthBar));
+		//}
 
-		// only render context preview if overlay is enabled
-		context.Render(pDrawList, vecBox);
+		//if (const auto& armorOverlayConfig = C_GET(BarOverlayVar_t, Vars.overlayArmorBar); armorOverlayConfig.bEnable)
+		//{
+		//	const float flArmorFactor = M_SIN(ImGui::GetTime() * 5.f) * 0.55f + 0.45f;
+		//	context.AddComponent(new CBarComponent(false, SIDE_BOTTOM, vecBox, flArmorFactor, Vars.overlayArmorBar));
+		//}
+
+		//// only render context preview if overlay is enabled
+		//context.Render(pDrawList, vecBox);
 
 		if (ImGui::BeginPopup(CS_XOR("context##box.component"), ImGuiWindowFlags_NoResize | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoMove))
 		{

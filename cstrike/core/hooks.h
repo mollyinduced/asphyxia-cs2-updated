@@ -77,14 +77,7 @@ namespace H
 	long CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 	// game's functions
-	ViewMatrix_t* CS_FASTCALL GetMatrixForView(CRenderGameSystem* pRenderGameSystem, IViewRender* pViewRender, ViewMatrix_t* pOutWorldToView, ViewMatrix_t* pOutViewToProjection, ViewMatrix_t* pOutWorldToProjection, ViewMatrix_t* pOutWorldToPixels);
-	bool CS_FASTCALL CreateMove(CCSGOInput* pInput, int nSlot, CUserCmd* cmd);
 	bool CS_FASTCALL MouseInputEnabled(void* pThisptr);
-	void CS_FASTCALL FrameStageNotify(void* rcx, int nFrameStage);
-	__int64* CS_FASTCALL LevelInit(void* pClientModeShared, const char* szNewMap);
-	__int64 CS_FASTCALL LevelShutdown(void* pClientModeShared);
-	void CS_FASTCALL OverrideView(void* pClientModeCSNormal, CViewSetup* pSetup);
-	void CS_FASTCALL DrawObject(void* pAnimatableSceneObjectDesc, void* pDx11, CMeshData* arrMeshDraw, int nDataCount, void* pSceneView, void* pSceneLayer, void* pUnk, void* pUnk2);
 	void* IsRelativeMouseMode(void* pThisptr, bool bActive);
 
 	/* @section: managers */
@@ -93,14 +86,6 @@ namespace H
 	inline CBaseHookObject<decltype(&CreateSwapChain)> hkCreateSwapChain = {};
 	inline CBaseHookObject<decltype(&WndProc)> hkWndProc = {};
 
-	inline CBaseHookObject<decltype(&GetMatrixForView)> hkGetMatrixForView = {};
-	inline CBaseHookObject<decltype(&CreateMove)> hkCreateMove = {};
 	inline CBaseHookObject<decltype(&MouseInputEnabled)> hkMouseInputEnabled = {};
 	inline CBaseHookObject<decltype(&IsRelativeMouseMode)> hkIsRelativeMouseMode = {};
-	inline CBaseHookObject<decltype(&FrameStageNotify)> hkFrameStageNotify = {};
-	inline CBaseHookObject<decltype(&LevelInit)> hkLevelInit = {};
-	inline CBaseHookObject<decltype(&LevelShutdown)> hkLevelShutdown = {};
-	inline CBaseHookObject<decltype(&OverrideView)> hkOverrideView = {};
-
-	inline CBaseHookObject<decltype(&DrawObject)> hkDrawObject = {};
 }

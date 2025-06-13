@@ -124,14 +124,8 @@ bool CORE::GetWorkingPath(wchar_t* wszDestination)
 	return bSuccess;
 }
 
-static bool Setup(HMODULE hModule)
+bool setupdebug()
 {
-	if (CORE::bInitialized)
-	{
-		L_PRINT(LOG_WARNING) << CS_XOR("Setup called but already initialized");
-		return true;
-	}
-
 #ifdef CS_LOG_CONSOLE
 	if (!L::AttachConsole(CS_XOR(L"Leerware developer-mode")))
 	{
@@ -147,6 +141,18 @@ static bool Setup(HMODULE hModule)
 	}
 #endif
 	L_PRINT(LOG_NONE) << L::SetColor(LOG_COLOR_FORE_GREEN | LOG_COLOR_FORE_INTENSITY) << CS_XOR("logging system initialization completed");
+}
+
+static bool Setup(HMODULE hModule)
+{
+	if (CORE::bInitialized)
+	{
+		L_PRINT(LOG_WARNING) << CS_XOR("Setup called but already initialized");
+		return true;
+	}
+
+	setupdebug();
+
 
 	// setup game's exported functions
 	if (!MEM::Setup())
@@ -193,12 +199,6 @@ static bool Setup(HMODULE hModule)
 		::Sleep(200U);
 	L_PRINT(LOG_NONE) << L::SetColor(LOG_COLOR_FORE_GREEN | LOG_COLOR_FORE_INTENSITY) << CS_XOR("renderer backend initialization completed");
 
-	// initialize feature-related stuff
-	if (!F::Setup())
-	{
-		CS_ASSERT(false); // failed to setup features
-		return false;
-	}
 	L_PRINT(LOG_NONE) << L::SetColor(LOG_COLOR_FORE_GREEN | LOG_COLOR_FORE_INTENSITY) << CS_XOR("features initialization completed");
 
 	// iterate all valid modules for schema
@@ -272,9 +272,6 @@ static void Destroy()
 
 	// destroy renderer backend
 	D::Destroy();
-
-	// destroy chams dependent stuff
-	F::Destroy();
 
 #ifdef CS_LOG_CONSOLE
 	L::DetachConsole();

@@ -22,22 +22,6 @@
 #include "sdk/datatypes/usercmd.h"
 #include "sdk/entity.h"
 
-bool F::Setup()
-{
-	if (!VISUALS::Setup())
-	{
-		L_PRINT(LOG_ERROR) << CS_XOR("failed to setup visuals");
-		return false;
-	}
-
-	return true;
-}
-
-void F::Destroy()
-{
-	VISUALS::OnDestroy();
-}
-
 void F::OnPresent()
 {
 	if (!D::bInitialized)
@@ -57,24 +41,4 @@ void F::OnPresent()
 		ImGui::PopFont();
 	}
 	D::Render();
-}
-
-void F::OnFrameStageNotify(int nStage)
-{
-	F::VISUALS::OnFrame(nStage);
-}
-
-void F::OnCreateMove(CUserCmd* pCmd, CBaseUserCmdPB* pBaseCmd, CCSPlayerController* pLocalController)
-{
-	C_CSPlayerPawn* pLocalPawn = I::GameResourceService->pGameEntitySystem->Get<C_CSPlayerPawn>(pLocalController->GetPawnHandle());
-	if (pLocalPawn == nullptr)
-		return;
-
-	F::MISC::OnMove(pCmd, pBaseCmd, pLocalController, pLocalPawn);
-	F::LEGITBOT::OnMove(pCmd, pBaseCmd, pLocalController, pLocalPawn);
-}
-
-bool F::OnDrawObject(void* pAnimatableSceneObjectDesc, void* pDx11, CMeshData* arrMeshDraw, int nDataCount, void* pSceneView, void* pSceneLayer, void* pUnk, void* pUnk2)
-{
-	return VISUALS::OnDrawObject(pAnimatableSceneObjectDesc, pDx11, arrMeshDraw, nDataCount, pSceneView, pSceneLayer, pUnk, pUnk2);
 }

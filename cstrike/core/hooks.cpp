@@ -79,59 +79,9 @@ bool H::Setup()
 	pIDXGIFactory->Release();
 	pIDXGIFactory = nullptr;
 
-	// @ida: class CViewRender->OnRenderStart call GetMatricesForView
-	if (!hkGetMatrixForView.Create(MEM::FindPattern(CLIENT_DLL, CS_XOR("40 53 48 81 EC ? ? ? ? 49 8B C1")), reinterpret_cast<void*>(&GetMatrixForView)))
-		return false;
-	L_PRINT(LOG_INFO) << CS_XOR("\"GetMatrixForView\" hook has been created");
-
-	// @ida: #STR: cl: CreateMove clamped invalid attack history index %d in frame history to -1. Was %d, frame history size %d.\n
-	// Consider updating I::Input, VTABLE::CLIENT::CREATEMOVE and using that instead.
-
-	// For now, we'll use the pattern
-	// Credit: https://www.unknowncheats.me/forum/4265695-post6331.html
-	if (!hkCreateMove.Create(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 8B C4 4C 89 40 18 48 89 48 08 55 53 57")), reinterpret_cast<void*>(&CreateMove)))
-		return false;
-	L_PRINT(LOG_INFO) << CS_XOR("\"CreateMove\" hook has been created");
-
 	if (!hkMouseInputEnabled.Create(MEM::GetVFunc(I::Input, VTABLE::CLIENT::MOUSEINPUTENABLED), reinterpret_cast<void*>(&MouseInputEnabled)))
 		return false;
 	L_PRINT(LOG_INFO) << CS_XOR("\"MouseInputEnabled\" hook has been created");
-
-	if (!hkFrameStageNotify.Create(MEM::GetVFunc(I::Client, VTABLE::CLIENT::FRAMESTAGENOTIFY), reinterpret_cast<void*>(&FrameStageNotify)))
-		return false;
-	L_PRINT(LOG_INFO) << CS_XOR("\"FrameStageNotify\" hook has been created");
-
-	// in ida it will go in order as
-	// @ida: #STR: ; "game_newmap"
-	// @ida: #STR: ; "mapname"
-	// @ida: #STR: ; "transition"
-	// and the pattern is in the first one "game_newmap"
-	if (!hkLevelInit.Create(MEM::FindPattern(CLIENT_DLL, CS_XOR("40 53 48 83 EC 20 48 8B D9 E8 ? ? ? ? C6 83 ? ? ? ? ? C6 83 ? ? ? ? ?")), reinterpret_cast<void*>(&LevelInit)))
-		return false;
-	L_PRINT(LOG_INFO) << CS_XOR("\"LevelInit\" hook has been created");
-
-	// @ida: ClientModeShared -> #STR: "map_shutdown"
-	if (!hkLevelShutdown.Create(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 89 74 24 ? 57 48 83 EC 20 48 8B F9 E8 ? ? ? ? 48 8D 8F ? ? ? ?")), reinterpret_cast<void*>(&LevelShutdown)))
-		return false;
-	L_PRINT(LOG_INFO) << CS_XOR("\"LevelShutdown\" hook has been created");
-
-	// @note: seems to do nothing for now...
-	// @ida: ClientModeCSNormal->OverrideView idx 15
-	//v21 = flSomeWidthSize * 0.5;
-	//v22 = *flSomeHeightSize * 0.5;
-	//*(float*)(pSetup + 0x49C) = v21; // m_OrthoRight
-	//*(float*)(pSetup + 0x494) = -v21; // m_OrthoLeft
-	//*(float*)(pSetup + 0x498) = -v22; // m_OrthoTop
-	//*(float*)(pSetup + 0x4A0) = v22; // m_OrthoBottom
-	if (!hkOverrideView.Create(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 89 5C 24 ? 48 89 6C 24 ? 48 89 74 24 ? 57 41 56 41 57 48 83 EC ? 48 8B FA E8")), reinterpret_cast<void*>(&OverrideView)))
-		return false;
-
-	//L_PRINT(LOG_INFO) << CS_XOR("\"OverrideView\" hook has been created");
-
-	// Credit: https://www.unknowncheats.me/forum/4253223-post6185.html
-	if (!hkDrawObject.Create(MEM::FindPattern(SCENESYSTEM_DLL, CS_XOR("48 8B C4 48 89 50 ? 53")), reinterpret_cast<void*>(&DrawObject)))
-		return false;
-	L_PRINT(LOG_INFO) << CS_XOR("\"DrawObject\" hook has been created");
 
 	if (!hkIsRelativeMouseMode.Create(MEM::GetVFunc(I::InputSystem, VTABLE::INPUTSYSTEM::ISRELATIVEMOUSEMODE), reinterpret_cast<void*>(&IsRelativeMouseMode)))
 		return false;
@@ -194,116 +144,10 @@ long H::WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	return ::CallWindowProcW(IPT::pOldWndProc, hWnd, uMsg, wParam, lParam);
 }
 
-ViewMatrix_t* CS_FASTCALL H::GetMatrixForView(CRenderGameSystem* pRenderGameSystem, IViewRender* pViewRender, ViewMatrix_t* pOutWorldToView, ViewMatrix_t* pOutViewToProjection, ViewMatrix_t* pOutWorldToProjection, ViewMatrix_t* pOutWorldToPixels)
-{
-	const auto oGetMatrixForView = hkGetMatrixForView.GetOriginal();
-	ViewMatrix_t* matResult = oGetMatrixForView(pRenderGameSystem, pViewRender, pOutWorldToView, pOutViewToProjection, pOutWorldToProjection, pOutWorldToPixels);
-
-	// get view matrix
-	SDK::ViewMatrix = *pOutWorldToProjection;
-	// get camera position
-	// @note: ida @GetMatrixForView(global_pointer, pRenderGameSystem + 16, ...)
-	SDK::CameraPosition = pViewRender->vecOrigin;
-
-	return matResult;
-}
-
-bool CS_FASTCALL H::CreateMove(CCSGOInput* pInput, int nSlot, CUserCmd* cmd)
-{
-	const auto oCreateMove = hkCreateMove.GetOriginal();
-	const bool bResult = oCreateMove(pInput, nSlot, cmd);
-
-	if (!I::Engine->IsConnected() || !I::Engine->IsInGame())
-		return bResult;
-
-	SDK::Cmd = cmd;
-	if (SDK::Cmd == nullptr)
-		return bResult;
-
-	CBaseUserCmdPB* pBaseCmd = SDK::Cmd->csgoUserCmd.pBaseCmd;
-	if (pBaseCmd == nullptr)
-		return bResult;
-
-	SDK::LocalController = CCSPlayerController::GetLocalPlayerController();
-	if (SDK::LocalController == nullptr)
-		return bResult;
-
-	SDK::LocalPawn = I::GameResourceService->pGameEntitySystem->Get<C_CSPlayerPawn>(SDK::LocalController->GetPawnHandle());
-	if (SDK::LocalPawn == nullptr)
-		return bResult;
-
-	F::OnCreateMove(SDK::Cmd, pBaseCmd, SDK::LocalController);
-
-	// TODO : We need to fix CRC saving
-	// 
-	// There seems to be an issue within CBasePB and the classes that derive it.
-	// So far, you may be unable to press specific keys such as crouch and automatic shooting.
-	// A dodgy fix would be to comment it out but it still doesn't fix the bhop etc.
-
-	//CRC::Save(pBaseCmd);
-	//if (CRC::CalculateCRC(pBaseCmd) == true)
-	//	CRC::Apply(SDK::Cmd);
-
-
-	return bResult;
-}
-
 bool CS_FASTCALL H::MouseInputEnabled(void* pThisptr)
 {
 	const auto oMouseInputEnabled = hkMouseInputEnabled.GetOriginal();
 	return MENU::bMainWindowOpened ? false : oMouseInputEnabled(pThisptr);
-}
-
-void CS_FASTCALL H::FrameStageNotify(void* rcx, int nFrameStage)
-{
-	const auto oFrameStageNotify = hkFrameStageNotify.GetOriginal();
-	F::OnFrameStageNotify(nFrameStage);
-
-	return oFrameStageNotify(rcx, nFrameStage);
-}
-
-__int64* CS_FASTCALL H::LevelInit(void* pClientModeShared, const char* szNewMap)
-{
-	const auto oLevelInit = hkLevelInit.GetOriginal();
-	// if global variables are not captured during I::Setup or we join a new game, recapture it
-	if (I::GlobalVars == nullptr)
-		I::GlobalVars = *reinterpret_cast<IGlobalVars**>(MEM::ResolveRelativeAddress(MEM::FindPattern(CLIENT_DLL, CS_XOR("48 8B 05 ?? ?? ?? ?? 44 8B B7 ?? ?? ?? ?? 8B 70 04 B8 ?? ?? ?? ??")), 0x3, 0x7));
-	
-	// disable model occlusion
-	I::PVS->Set(false);
-
-	return oLevelInit(pClientModeShared, szNewMap);
-}
-
-__int64 CS_FASTCALL H::LevelShutdown(void* pClientModeShared)
-{
-	const auto oLevelShutdown = hkLevelShutdown.GetOriginal();
-	// reset global variables since it got discarded by the game
-	I::GlobalVars = nullptr;
-
-	return oLevelShutdown(pClientModeShared);
-}
-
-void CS_FASTCALL H::OverrideView(void* pClientModeCSNormal, CViewSetup* pSetup)
-{
-	const auto oOverrideView = hkOverrideView.GetOriginal();
-	if (!I::Engine->IsConnected() || !I::Engine->IsInGame())
-		return hkOverrideView.GetOriginal()(pClientModeCSNormal, pSetup);
-
-	oOverrideView(pClientModeCSNormal, pSetup);
-}
-
-void CS_FASTCALL H::DrawObject(void* pAnimatableSceneObjectDesc, void* pDx11, CMeshData* arrMeshDraw, int nDataCount, void* pSceneView, void* pSceneLayer, void* pUnk, void* pUnk2)
-{
-	const auto oDrawObject = hkDrawObject.GetOriginal();
-	if (!I::Engine->IsConnected() || !I::Engine->IsInGame())
-		return oDrawObject(pAnimatableSceneObjectDesc, pDx11, arrMeshDraw, nDataCount, pSceneView, pSceneLayer, pUnk, pUnk2);
-
-	if (SDK::LocalController == nullptr || SDK::LocalPawn == nullptr)
-		return oDrawObject(pAnimatableSceneObjectDesc, pDx11, arrMeshDraw, nDataCount, pSceneView, pSceneLayer, pUnk, pUnk2);
-
-	if (!F::OnDrawObject(pAnimatableSceneObjectDesc, pDx11, arrMeshDraw, nDataCount, pSceneView, pSceneLayer, pUnk, pUnk2))
-		oDrawObject(pAnimatableSceneObjectDesc, pDx11, arrMeshDraw, nDataCount, pSceneView, pSceneLayer, pUnk, pUnk2);
 }
 
 void* H::IsRelativeMouseMode(void* pThisptr, bool bActive)
